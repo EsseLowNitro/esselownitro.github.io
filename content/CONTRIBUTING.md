@@ -20,11 +20,9 @@ And if you like the project, but just don't have time to contribute, that's fine
 - [Code of Conduct](#code-of-conduct)
 - [I Have a Question](#i-have-a-question)
 - [I Want To Contribute](#i-want-to-contribute)
-  - [Legal Notice](#legal-notice)
-  - [AI Content Policy](#ai-content)
   - [Reporting Bugs](#reporting-bugs)
   - [Pull Requests](#pull-requests)
-  - [How to test incoming changes](#how-to-test-incoming-changes)
+  - [How to test incoming changes](#testing)
 - [Building Locally](#building-locally)
 - [Styleguides](#styleguides)
   - [Commit Messages](#commit-messages)
@@ -32,9 +30,7 @@ And if you like the project, but just don't have time to contribute, that's fine
 ## [Code of Conduct](#code-of-conduct)
 {: #code-of-conduct}
 
-This project and everyone participating in it is governed by the [Code of Conduct](/code-of-conduct).
-By participating, you are expected to uphold this code. Please report unacceptable behavior
-to secureblueadmin@proton.me
+This project and everyone participating in it is governed by the [Code of Conduct](/code-of-conduct). By participating, you are expected to uphold this code. Please report unacceptable behavior to `secureblueadmin@proton.me`
 
 ## [I Have a Question](#i-have-a-question)
 {: #i-have-a-question}
@@ -44,20 +40,12 @@ If you want to ask a question, you are welcome to do so in [our Discord server](
 ## [I Want To Contribute](#i-want-to-contribute)
 {: #i-want-to-contribute}
 
-### [Legal Notice](#legal-notice)
-{: #legal-notice}
+{% include type='important' content='When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.' %}
 
-When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.
-
-### [AI Content Policy](#ai-content)
-{: #ai-content}
-
-In the interest of accuracy, quality, and license of the project, contributing using AI generated code and content of any kind is forbidden.
+{% include type='warning' content='In the interest of accuracy, quality, and license of the project, contributing using AI generated code and content of any kind is <em>forbidden</em>.' %}
 
 ### [Reporting Bugs](#reporting-bugs)
 {: #reporting-bugs}
-
-#### Before Submitting a Bug Report
 
 A good bug report should describe the issue in detail. Generally speaking:
 
@@ -72,8 +60,6 @@ A good bug report should describe the issue in detail. Generally speaking:
 ### [Pull Requests](#pull-requests)
 {: #pull-requests}
 
-#### Before Submitting a Pull Request
-
 A good pull request should be ready for review before it is even created. For all pull requests, ensure:
 
 - You have no unnecessary changes, including whitespace changes
@@ -81,16 +67,19 @@ A good pull request should be ready for review before it is even created. For al
 - For substantive changes, you include evidence of proper functionality in the pull request in addition to the build results.
 - Your commits are [verified](https://docs.github.com/en/authentication/managing-commit-signature-verification)
 
-### [How to test incoming changes](#how-to-test-incoming-changes)
-{: #how-to-test-incoming-changes}
+### [How to test incoming changes](#testing)
+{: #testing}
 
 One of the nice things about the image model is that we can generate an entire OS image for every change we want to commit, so this makes testing way easier than in the past. You can rebase to it, see if it works, and then move back. This also means we can increase the amount of testers!
 
 We strive towards a model where proposed changes are more thoroughly reviewed and tested by the community. So here's how to do it. If you see a pull request that is opened up on an image you're following, you can leave a review on how it's working for you.
 
-## Building your images with GitHub Actions (recommended)
+## [Building your images with GitHub Actions (recommended)](#building-with-actions)
+{: #building-with-actions}
 
-Start from your own fork with a branch for the pull request/feature you want to develop. Follow the instructions [here](https://blue-build.org/how-to/cosign/) to add your own keys to verify your own custom image. From there, it's recommended you go to .github/workflows/build.yml and comment out all of the image variants except the ones you use/intend to test. This drastically speeds up your workflow runtime. Then just go to actions > build-secureblue and select run workflow, making sure you select the branch you just set up.
+Start from your own fork with a branch for the pull request/feature you want to develop. Follow the instructions [here](https://blue-build.org/how-to/cosign/) to create your own keypair used to verify your own custom image, but when adding the private key to your GitHub repository secrets, add it as an environment secret rather than as a repository secret.
+
+From there, it's recommended you go to .github/workflows/build.yml and comment out all of the image variants except the ones you use/intend to test. This drastically speeds up your workflow runtime. Then just go to actions > build-secureblue and select run workflow, making sure you select the branch you just set up.
 
 Once it's done building, go to your VM running Fedora Atomic and rebase to your newly built image. This is a string that starts with 'rpm-ostree rebase ostree-unverified-registry:ghcr.io/', followed by the repo and package name. This can be found by checking the "packages" section in the sidebar of your fork. Take the docker pull command and copy the repo and package reference. Then, append the tag, which is in the format `br-{branchName}-{fedoraVersion}`. Your command should look like this:
 
